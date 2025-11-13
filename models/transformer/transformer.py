@@ -12,7 +12,8 @@ from models.transformer.attention import MultiHeadAttention,\
 
 
 class Transformer(nn.Module):
-    ''' A sequence to sequence model with attention mechanism. '''
+    ''' A sequence to embedding model with attention mechanism. Major modifications made from 
+    https://github.com/jadore801120/attention-is-all-you-need-pytorch/blob/master/transformer/Models.py'''
 
     def __init__(
             self, 
