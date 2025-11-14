@@ -83,6 +83,17 @@ class PixelSetData(Dataset):
         
         self.labels = torch.from_numpy(labels)
 
+        self.label_names = [
+            'Winter Durum Wheat',
+            'Spring Cereal',
+            'Summer Cereal',
+            'Winter Cereal',
+            'Cereal',
+            'Leguminous Fodder',
+            'Other Fodder',
+            'Winter Rapeseed'
+        ]
+
 
     def __len__(self):
         raise NotImplementedError
