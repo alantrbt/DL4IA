@@ -1,5 +1,5 @@
 # Data
-data_folder: '/home/romain/Documents/agro_paris_tech/cours/IODAA/TD1/subset_dataset'
+data_folder: 'your/path/to/data'
 n_channels: 10
 n_pixels: 64
 pad_value: 0
@@ -35,4 +35,4 @@ spectral_indices: False
 channels:
 
 # Results folder
-res_dir: '/home/romain/Documents/agro_paris_tech/cours/IODAA/TD1/results/learnable_query'
+res_dir: 'your/path/to/results'
