@@ -16,7 +16,8 @@ Schedule (First edition, 2026)
 | Friday, 16. January 2026, 09:00–12:30      | Tutorial 1: Classification of Satellite Image Time Series with           |
 |                                            | Transformers                                                             |
 +--------------------------------------------+--------------------------------------------------------------------------+
-| Tuesday, 20. January 2026, 14:00–17:30     | Tutorial 2: Deep Learning for Inverse Problems in Medical Imaging        |
+| Tuesday, 20. January 2026, 14:00–17:30     | Tutorial 2: Deep Learning for Inverse Problems in Medical Imaging:       |
+|                                            | (in)stability and hallucinations                                                             |
 +--------------------------------------------+--------------------------------------------------------------------------+
 | Friday, 23. January 2026, 09:00–12:30      | Tutorial 3: Self-supervised Learning of Visual Representations           |
 +--------------------------------------------+--------------------------------------------------------------------------+
