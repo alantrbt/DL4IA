@@ -23,13 +23,8 @@ Schedule (First edition, 2026)
 +--------------------------------------------+--------------------------------------------------------------------------+
 
 .. toctree::
-   :caption: SITS Classification
+   :caption: TUTORIALS
    :maxdepth: 1
 
    tutorials/sits_classification/sits_classification.ipynb
-
-.. toctree::
-   :caption: SSL of Visual Representations
-   :maxdepth: 1
-
    tutorials/learning_visual_representations/learning_visual_representations.ipynb
