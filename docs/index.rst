@@ -30,6 +30,7 @@ Schedule (First edition, 2026)
    their numerical experiments.
 
    tutorials/sits_classification/sits_classification.ipynb
+   tutorials/mri_restoration/mri_restoration.ipynb
    tutorials/learning_visual_representations/learning_visual_representations.ipynb
 
 
