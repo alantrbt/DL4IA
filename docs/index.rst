@@ -26,6 +26,9 @@ Schedule (First edition, 2026)
    :caption: Tutorials
    :maxdepth: 1
 
+   The tutorials are based on recent publications in top-tier scientific journals or conferences. They reproduce parts or variants of
+   their numerical experiments.
+
    tutorials/sits_classification/sits_classification.ipynb
    tutorials/learning_visual_representations/learning_visual_representations.ipynb
 
