@@ -1,5 +1,5 @@
 # Data
-data_folder: 'your/path/to/data'
+data_folder: your/path/to/data
 n_channels: 10
 n_pixels: 64
 pad_value: 0
@@ -39,4 +39,4 @@ channels:
 compute_values: False
   
 # Results folder
-res_dir: 'your/path/to/results'
+res_dir: your/path/to/results
