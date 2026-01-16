@@ -11,7 +11,15 @@ def dates2doys(dates: list[str]):
     '''TODO: convert a list of dates (list of str) 
     to a list of days of year.
     '''
-    raise NotImplementedError
+    doys = []
+    for date in dates:
+        month = int(date[5:7])
+        day = int(date[8:])
+        doy = int(month) * 30 + int(day)
+        doys.append(doy)
+    
+    return torch.tensor(doys).long()
+
 
 
 def pad_tensor(x: torch.Tensor, l: int, pad_value=0.):
