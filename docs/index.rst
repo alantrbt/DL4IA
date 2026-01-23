@@ -44,6 +44,7 @@ They reproduce parts or variants of their numerical experiments.
    :maxdepth: 1
 
    tutorials/multispectral_images/multispectral_images.ipynb
+   tutorials/discrete_fourier_transform/discrete_fourier_transform.ipynb
 
 Evaluation
 ----------
