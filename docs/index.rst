@@ -27,6 +27,7 @@ Lectures
 
 - `A brief introduction to remote sensing, optical satellite images, and tutorial 1 <https://raw.githubusercontent.com/Romain3Ch216/DL4IA/main/docs/lectures/lecture1.pdf>`_
 - `A brief introduction to Magnetic Resonance Imaging (MRI) reconstruction, and tutorial 2 <https://raw.githubusercontent.com/Romain3Ch216/DL4IA/main/docs/lectures/lecture2.pdf>`_
+- `A brief introduction to the self-supervised learning of visual representations, and tutorial 3 <https://raw.githubusercontent.com/Romain3Ch216/DL4IA/main/docs/lectures/lecture3.pdf>`_
 
 .. toctree::
    :caption: Tutorials
@@ -44,6 +45,7 @@ They reproduce parts or variants of their numerical experiments.
    :maxdepth: 1
 
    tutorials/multispectral_images/multispectral_images.ipynb
+   tutorials/discrete_fourier_transform/discrete_fourier_transform.ipynb
 
 Evaluation
 ----------
