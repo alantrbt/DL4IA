@@ -59,13 +59,18 @@ class fastMriData(mriData):
     def measurement(target_kspace: torch.Tensor, mask: torch.Tensor):
         """Simulates a measurement.
         """
-        raise NotImplementedError
+        obs_kspace = torch.zeros_like(target_kspace)
+        obs_kspace[:, mask] = target_kspace[:, mask]
+        obs_image = torch.abs(
+            torch.fft.ifftn(obs_kspace)
+            )
+        return obs_kspace, obs_image
 
     def __getitem__(self, i):
-        target_kspace = ...
-        target_image = ...
+        target_kspace = super().__getitem__(i)
+        target_image = torch.abs(torch.fft.ifftn(target_kspace))
 
-        obs_kspace, obs_image = self.measurement(...)
+        obs_kspace, obs_image = self.measurement(target_kspace, self.mask)
 
         obs_image = (obs_image.float() - self.mean) / self.std
         target_image = (target_image.float() - self.mean) / self.std
@@ -91,13 +96,21 @@ def kspace_mask(kspace_shape, acceleration_factor: int = 4):
     center = n_columns // 2
     n_tot = n_columns // acceleration_factor
     
-    n_center = ...
+    if acceleration_factor == 4:
+        n_center = int(n_columns * 0.08)
+    elif acceleration_factor == 8:
+        n_center = int(n_columns * 0.04)
+    else:
+        raise ValueError("Only acceleration factors 4 and 8 are supported.")
 
     random_mask = np.zeros(n_columns)
-    random_mask[...] = 1
+    random_mask[center - n_center // 2 : center + n_center // 2] = 1
 
     n_high_freq = n_tot - n_center
-    high_freq = ...
+    high_freq = np.concatenate((
+        np.arange(center - n_center // 2),
+        np.arange(center + n_center // 2 - 1, n_columns)
+        ))
     
     high_freq = np.random.choice(high_freq, size=n_high_freq, replace=False)
     random_mask[high_freq] = 1

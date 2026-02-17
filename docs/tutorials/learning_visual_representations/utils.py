@@ -38,7 +38,10 @@ def show_samples_per_class(
     np.random.shuffle(samples)
     samples = samples[:n_samples]
     for i in range(n_samples):
-        ax[i].imshow(samples[i])
+        img = samples[i]
+        if img.shape[0] == 3:  # (C, H, W)
+            img = np.transpose(img, (1, 2, 0))  # (H, W, C)
+        ax[i].imshow(img)
         ax[i].set_xticks([])
         ax[i].set_yticks([])
     plt.show()
