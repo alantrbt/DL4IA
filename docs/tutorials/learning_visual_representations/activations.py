@@ -95,15 +95,15 @@ def maximize_img_response(model, img_size, layer, filter_id, device='cuda', n_it
         loss = F.cross_entropy(out, target) + wd * torch.norm(img)  # TODO: complete.
 
         # compute gradient
-        loss.backward()
+        loss.backward()  # TODO: complete.
 
         # normalize gradient
-        grads = img.grad.data
+        grads = img.grad.data  # TODO: complete.
         grads = grads.div(torch.norm(grads)+1e-8)
 
         # Update image
-        img.data = img.data + lr * grads
-        img.grad.zero_()
+        img.data = img.data + lr * grads  # TODO: complete.
+        img.grad.zero_()  # TODO: complete.
 
         # Apply gaussian blur
         if it % reg_step == 0:
@@ -113,3 +113,46 @@ def maximize_img_response(model, img_size, layer, filter_id, device='cuda', n_it
             img = torch.nn.Parameter(data=img).to(device)
 
     return deprocess_image(img.detach().cpu().numpy())
+
+
+##################################
+# --- Ajout du top-k filters --- #
+##################################
+import numpy as np
+
+def compute_filter_activations(model, dataset, filter_ids, layer=5, batch_size=32, device='cuda'):
+    """
+    Calcule la moyenne spatiale de chaque filtre pour toutes les images du dataset.
+    
+    Returns:
+        activations_dict : dict {filter_id: list of mean activations per image}
+        indices : list of dataset indices corresponding to activations
+    """
+    loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=False)
+    model = model.to(device)
+    activations_dict = {f: [] for f in filter_ids}
+    indices = []
+
+    for batch_idx, (data, _) in enumerate(tqdm(loader)):
+        data = data.to(device)
+        batch_activation = compute_batch_activations(model, data, layer)  # [B,C,H,W]
+
+        for f in filter_ids:
+            # moyenne spatiale par image
+            acts = batch_activation[:, f, :, :].mean(dim=(1,2))
+            activations_dict[f].extend(acts.detach().cpu().numpy())
+
+        indices.extend(np.arange(batch_idx*batch_size, batch_idx*batch_size + data.size(0)))
+
+    return activations_dict, indices
+
+def get_topk_images(activations_dict, indices, k=10):
+    """
+    Retourne les indices des Top-k images pour chaque filtre.
+    """
+    topk_indices = {}
+    for f, acts in activations_dict.items():
+        acts = np.array(acts)
+        sorted_idx = np.argsort(-acts)  # tri décroissant
+        topk_indices[f] = [indices[i] for i in sorted_idx[:k]]
+    return topk_indices
