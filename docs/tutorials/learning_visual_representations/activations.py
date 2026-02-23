@@ -8,42 +8,51 @@ from tqdm import tqdm
 
 from utils import deprocess_image
 
+
 def compute_batch_activations(model, x, layer):
     """TODO: complete.
     """
+    activation = None  # TODO: complete.
     if model.sobel is not None:
         x = model.sobel(x)
     current_layer = 1
     for m in model.features.modules():
         if not isinstance(m, nn.Sequential):
-            x = ...
+            x = m(x)  # TODO: complete.
             if isinstance(m, nn.ReLU):
                 if current_layer == layer:
-                    activation = ...
+                    activation = x.clone().detach()  # TODO: complete.
                 else:
-                    ...
+                    current_layer += 1  # TODO: complete.
+    if activation is None:  # TODO: complete.
+        raise ValueError(f"Layer {layer} not found in model.")  # TODO: complete.
+    return activation  # TODO: complete.
 
 
 def compute_activations_for_gradient_ascent(model, x, layer, filter_id):
     """TODO: complete.
     """
+    activation = None  # TODO: complete.
     if model.sobel is not None:
         x = model.sobel(x)
     current_layer = 1
     for m in model.features.modules():
         if not isinstance(m, nn.Sequential):
-            x = ...
+            x = m(x)  # TODO: complete.
             if isinstance(m, nn.Conv2d) and current_layer == layer:
-                activation = ...
+                activation = x.clone().detach()  # TODO: complete.
             if isinstance(m, nn.ReLU):
                 if current_layer == layer:
-                    if x[:, filter_id, :, :].mean().data.cpu().numpy() == 0:
+                    filter_activation = x[:, filter_id, :, :]
+                    if filter_activation.mean().item() == 0:
                         return activation
                     else:
-                        activation = ...
+                        activation = filter_activation.clone().detach()  # TODO: complete.
                     return activation
                 else:
-                    ...
+                    current_layer += 1  # TODO: complete.
+    if activation is None:  # TODO: complete.
+        raise ValueError(f"Layer {layer} not found in model.")  # TODO: complete.
 
 
 def compute_dataset_activations(model, dataset, layer, batch_size=64):
@@ -83,17 +92,18 @@ def maximize_img_response(model, img_size, layer, filter_id, device='cuda', n_it
             model, img, layer=layer, filter_id=filter_id
             )
         target = torch.autograd.Variable(...).to(device)
-        loss = F.cross_entropy(out, target) + wd * ...
+        loss = F.cross_entropy(out, target) + wd * torch.norm(img)  # TODO: complete.
 
         # compute gradient
-        ...
+        loss.backward()
 
         # normalize gradient
         grads = img.grad.data
         grads = grads.div(torch.norm(grads)+1e-8)
 
         # Update image
-        ...
+        img.data = img.data + lr * grads
+        img.grad.zero_()
 
         # Apply gaussian blur
         if it % reg_step == 0:

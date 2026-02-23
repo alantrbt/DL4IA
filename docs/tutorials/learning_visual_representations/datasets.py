@@ -36,13 +36,14 @@ class ImageNet(Dataset):
         img = read_image(file_path)
 
         # Convert to tensor
-        ...
+        img = torch.from_numpy(img)  # TODO: complete.
 
-        # Permute axis
-        ...
+        # # Permute axis
+        img = img.permute(2, 0, 1)
+        # print(f"Image shape after permutation: {img.shape}")  # Debug print
 
         # Convert to float in [0, 1]
-        ...
+        img = img.float() / 255.0  # TODO: complete.
 
         if self.transform is not None:
             img = self.transform(img)
@@ -86,8 +87,8 @@ class ContrastiveDataset(SubsetImageNet):
 
     def __getitem__(self, i):
         img, _ = super().__getitem__(i)
-        img1 = ...
-        img2 = ...
+        img1 = self.view_transform(img)  # TODO: complete.
+        img2 = self.view_transform(img)  # TODO: complete.
         return img, img1, img2
 
 

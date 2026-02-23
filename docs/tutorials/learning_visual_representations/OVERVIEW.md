@@ -58,9 +58,9 @@ learning_visual_representations/
 
 | Classe / Fonction | Description | À compléter ? |
 |---|---|---|
-| `ImageNet(Dataset)` | Dataset de base : lit des images depuis un dossier + fichier de labels. | ✅ `__getitem__` : conversion tensor, permutation axes, conversion float (`...`) |
-| `SubsetImageNet(ImageNet)` | Filtre ImageNet pour ne garder que certaines classes. | ✅ Complet |
-| `ContrastiveDataset(SubsetImageNet)` | Retourne `(img, view1, view2)` — deux vues augmentées de la même image pour l'apprentissage contrastif. | ✅ `img1 = ...`, `img2 = ...` |
+| `ImageNet(Dataset)` | Dataset de base : lit des images depuis un dossier + fichier de labels. | ✅ `__getitem__` : ✅ |
+| `SubsetImageNet(ImageNet)` | Filtre ImageNet pour ne garder que certaines classes. | ✅ |
+| `ContrastiveDataset(SubsetImageNet)` | Retourne `(img, view1, view2)` — deux vues augmentées de la même image pour l'apprentissage contrastif. | ✅ |
 | `ImageNetMnist(SubsetImageNet)` | Superpose des chiffres MNIST sur des images ImageNet. Supporte 3 modes : `'background'`, `'digit'`, `['background', 'digit']`. | ✅ Le corps de chaque branche `shared_feature` contient `...` |
 | `insert_digit(digit, img)` | Incruste un chiffre MNIST sur une image. | ✅ Complet |
 | `collate_views(batch)` | Fonction de collation pour `ImageNetMnist`. | ✅ Complet |
@@ -95,10 +95,10 @@ learning_visual_representations/
 
 | Fonction | Description | À compléter ? |
 |---|---|---|
-| `compute_batch_activations(model, x, layer)` | Extrait les activations d'une couche ReLU donnée. | ✅ Forward pass `x = ...`, capture `activation = ...` |
-| `compute_activations_for_gradient_ascent(model, x, layer, filter_id)` | Idem mais pour le gradient ascent (capture activation Conv2d). | ✅ Plusieurs `...` |
-| `compute_dataset_activations(model, dataset, layer)` | Boucle sur le dataset, appelle `compute_batch_activations`. | ✅ Complet (dépend du précédent) |
-| `maximize_img_response(...)` | Gradient ascent dans l'espace image pour maximiser la réponse d'un filtre. Régularisation L2 + blur gaussien. | ✅ `target = ...`, `loss = ...`, mise à jour `...` |
+| `compute_batch_activations(model, x, layer)` | Extrait les activations d'une couche ReLU donnée. | ✅ |
+| `compute_activations_for_gradient_ascent(model, x, layer, filter_id)` | Idem mais pour le gradient ascent (capture activation Conv2d). | ✅ |
+| `compute_dataset_activations(model, dataset, layer)` | Boucle sur le dataset, appelle `compute_batch_activations`. | ✅ |
+| `maximize_img_response(...)` | Gradient ascent dans l'espace image pour maximiser la réponse d'un filtre. Régularisation L2 + blur gaussien. | ✅ |
 
 ### `contrastive_training.py` — Entraînement SimCLR (standard)
 
@@ -180,8 +180,8 @@ Le notebook suit le plan suivant :
 Voici la liste de tout ce qui est à compléter, dans un ordre logique :
 
 ### Étape 1 : Fondations (datasets + utils)
-1. **`datasets.py` → `ImageNet.__getitem__`** : conversion tensor, permutation axes, float.
-2. **`datasets.py` → `ContrastiveDataset.__getitem__`** : appliquer `self.view_transform` pour créer `img1` et `img2`.
+1. **`datasets.py` → `ImageNet.__getitem__`** : ✅ conversion tensor, permutation axes, float.
+2. **`datasets.py` → `ContrastiveDataset.__getitem__`** : ✅ appliquer `self.view_transform` pour créer `img1` et `img2`.
 
 ### Étape 2 : Deep Clustering (partie 1 du notebook)
 3. **`dc_exp.py` → boucle train** : `logits`, `loss`, `pred`, `accuracy`.
