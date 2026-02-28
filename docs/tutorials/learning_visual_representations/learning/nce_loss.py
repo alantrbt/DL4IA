@@ -22,8 +22,26 @@ def nce_loss(
 
     # TODO: implement NT-Xent loss
 
-    loss = F.cross_entropy(sim, targets)
-    
-    return loss
+    # concaténer les embeddings de deux vues
+    z = torch.cat([z1, z2], dim=0)
 
-    
+    # Normalisation L2
+    z = F.normalize(z, dim=1)
+
+    # Similarité cosinus entre tous les éléments du batch
+    sim = torch.mm(z, z.t()) / temperature
+
+    # Masquer les similarités entre les éléments du même batch
+    # exemple diagonal de sim correspond à la similarité entre les éléments du même batch, on les masque en mettant une grande valeur négative
+    mask = torch.eye(sim.size(0), device=sim.device).bool()
+    sim = sim.masked_fill(mask, -LARGE_NUM)
+
+    # Cibles : les éléments du même batch sont des paires positives
+    n = z1.size(0)  # taille du batch
+    targets = torch.arange(n, device=sim.device)
+    targets = torch.cat([targets + n, targets], dim=0)
+
+    # Calcul de la loss cross-entropy
+    loss = F.cross_entropy(sim, targets)
+
+    return loss
