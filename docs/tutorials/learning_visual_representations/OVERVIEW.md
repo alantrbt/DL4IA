@@ -140,7 +140,7 @@ learning_visual_representations/
 | Fichier | Rôle | Paths renseignés ? |
 |---|---|---|
 | `dc_exp.yaml` | Classification downstream DC | ✅ Chemins remplis |
-| `contrastive_training.yaml` | Entraînement SimCLR standard | ❌ Chemins vides |
+| `contrastive_training.yaml` | Entraînement SimCLR standard | ✅ Chemins remplis |
 | `contrastive_training_background.yaml` | SimCLR vues "background" partagé | ❌ Chemins vides |
 | `contrastive_training_digit.yaml` | SimCLR vues "digit" partagé | ❌ Chemins vides |
 | `contrastive_training_background_digit.yaml` | SimCLR vues "background+digit" partagés | ❌ Chemins vides |
