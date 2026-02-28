@@ -40,14 +40,14 @@ def compute_activations_for_gradient_ascent(model, x, layer, filter_id):
         if not isinstance(m, nn.Sequential):
             x = m(x)  # TODO: complete.
             if isinstance(m, nn.Conv2d) and current_layer == layer:
-                activation = x.clone().detach()  # TODO: complete.
+                activation = x  # TODO: complete.
             if isinstance(m, nn.ReLU):
                 if current_layer == layer:
                     filter_activation = x[:, filter_id, :, :]
                     if filter_activation.mean().item() == 0:
                         return activation
                     else:
-                        activation = filter_activation.clone().detach()  # TODO: complete.
+                        activation = filter_activation  # TODO: complete.
                     return activation
                 else:
                     current_layer += 1  # TODO: complete.
@@ -77,13 +77,14 @@ def maximize_img_response(model, img_size, layer, filter_id, device='cuda', n_it
         device = 'cuda'
     else:
         device = 'cpu'
-
+    
     for param in model.parameters():
         param.requires_grad_(False)
 
-    img = torch.nn.Parameter(
-        data=torch.randn((1, 3, img_size, img_size))
-        ).to(device)
+    # CORRECTION : Créer le tenseur directement sur le device AVANT d'en faire un Parameter
+    # Cela garantit que img.grad ne sera pas None.
+    initial_tensor = torch.randn((1, 3, img_size, img_size), device=device)
+    img = torch.nn.Parameter(initial_tensor)
     
     model = model.to(device)
     for it in tqdm(range(n_it), desc='Gradient ascent in image space'):
@@ -91,8 +92,8 @@ def maximize_img_response(model, img_size, layer, filter_id, device='cuda', n_it
         out = compute_activations_for_gradient_ascent(
             model, img, layer=layer, filter_id=filter_id
             )
-        target = torch.autograd.Variable(...).to(device)
-        loss = F.cross_entropy(out, target) + wd * torch.norm(img)  # TODO: complete.
+
+        loss = - out.mean() + wd * torch.norm(img)  # TODO: complete.
 
         # compute gradient
         loss.backward()  # TODO: complete.
@@ -107,10 +108,18 @@ def maximize_img_response(model, img_size, layer, filter_id, device='cuda', n_it
 
         # Apply gaussian blur
         if it % reg_step == 0:
-            img = gaussian_filter(torch.squeeze(img).detach().cpu().numpy().transpose((2, 1, 0)),
-                                    sigma=(0.3, 0.3, 0))
-            img = torch.unsqueeze(torch.from_numpy(img).float().transpose(2, 0), 0)
-            img = torch.nn.Parameter(data=img).to(device)
+            img_np = torch.squeeze(img).detach().cpu().numpy().transpose((2, 1, 0))
+            blurred_img = gaussian_filter(img_np, sigma=(0.3, 0.3, 0))
+            
+            blurred_tensor = torch.from_numpy(blurred_img).float().transpose(2, 0)
+            blurred_tensor = torch.unsqueeze(blurred_tensor, 0).to(device)
+            
+            img.data = blurred_tensor
+
+            # img = gaussian_filter(torch.squeeze(img).detach().cpu().numpy().transpose((2, 1, 0)),
+            #                         sigma=(0.3, 0.3, 0))
+            # img = torch.unsqueeze(torch.from_numpy(img).float().transpose(2, 0), 0)
+            # img = torch.nn.Parameter(data=img).to(device)
 
     return deprocess_image(img.detach().cpu().numpy())
 
