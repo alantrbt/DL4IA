@@ -1,8 +1,8 @@
 # Config file for simCLR training with views that shared digit features only.
 
 # ImageNet info
-imagenet_data_folder:
-imagenet_labels_file:
+imagenet_data_folder: /home/howk/Documents/Professionel_études/AgroParisTech_cours/3A_IODAA/code_folder/Projet_romain/data_td3/subset_imagenet
+imagenet_labels_file: /home/howk/Documents/Professionel_études/AgroParisTech_cours/3A_IODAA/code_folder/Projet_romain/data_td3/imagenet_labels.txt
 imagenet_classes: [2, 3, 4, 6, 43, 203, 400, 600, 700, 800]
 
 # MNIST info
@@ -28,7 +28,7 @@ temperature: 0.1
 device: 'cuda'
 
 # Pretrained parameters
-pretrained_params:
+pretrained_params: /home/howk/Documents/Professionel_études/AgroParisTech_cours/3A_IODAA/code_folder/Projet_romain/data_td3/pretrained_alexnet_dc.tar
 
 # Results folder
 res_dir:

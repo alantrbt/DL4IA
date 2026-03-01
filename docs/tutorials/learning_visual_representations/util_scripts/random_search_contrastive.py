@@ -72,10 +72,10 @@ def main(cfg):
                 img1 = img1.to(device)
                 img2 = img2.to(device)
 
-                h1, h2 = ...
-                z1, z2 = ...
+                h1, h2 = model(img1), model(img2)
+                z1, z2 = projection_head(h1), projection_head(h2)
 
-                loss = ...
+                loss = nce_loss(z1, z2, temperature=temperature)
 
                 loss.backward()
                 optimizer.step()

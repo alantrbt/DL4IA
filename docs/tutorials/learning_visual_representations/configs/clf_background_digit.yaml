@@ -2,8 +2,8 @@
 # The base encoder was trained with simCLR on views that shared both background and digit features.
 
 # ImageNet info
-imagenet_data_folder:
-imagenet_labels_file:
+imagenet_data_folder: /home/howk/Documents/Professionel_études/AgroParisTech_cours/3A_IODAA/code_folder/Projet_romain/data_td3/subset_imagenet
+imagenet_labels_file: /home/howk/Documents/Professionel_études/AgroParisTech_cours/3A_IODAA/code_folder/Projet_romain/data_td3/imagenet_labels.txt
 imagenet_classes: [2, 3, 4, 6, 43, 203, 400, 600, 700, 800]
 
 # MNIST info

@@ -55,9 +55,9 @@ def main(cfg):
     projection_head = ProjectionHead(d_in=cfg['d_alexnet'], d_model=cfg['d_model']).to(device)
 
     optimizer = optim.Adam(
-        ..., 
-        lr=float(cfg['lr'])
-        )
+            list(model.parameters()) + list(projection_head.parameters()),
+            lr=float(cfg['lr'])
+    )
 
     for name, param in model.named_parameters():
         print(name, param.requires_grad)
@@ -82,10 +82,10 @@ def main(cfg):
             img1 = img1.to(device)
             img2 = img2.to(device)
 
-            h1, h2 = ...
-            z1, z2 = ...
+            h1, h2 = model(img1), model(img2)
+            z1, z2 = projection_head(h1), projection_head(h2)
 
-            loss = ...
+            loss = nce_loss(z1, z2, temperature=cfg['temperature'])
 
             loss.backward()
             optimizer.step()
