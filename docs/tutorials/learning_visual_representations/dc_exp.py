@@ -106,10 +106,10 @@ def main(cfg):
             data = data.to(device)
             labels = labels.to(device)
 
-            logits = ...
-            loss = ...
-            pred = ...
-            accuracy = ...
+            logits = model(data)
+            loss = F.cross_entropy(logits, labels)
+            pred = logits.argmax(dim=1)
+            accuracy = (pred == labels).float().mean().item()
 
             loss.backward()
             optimizer.step()
@@ -128,11 +128,11 @@ def main(cfg):
             labels = labels.to(device)
 
             with torch.no_grad():
-                logits = ...
+                logits = model(data)
 
-            loss = ...
-            pred = ...
-            accuracy = ...
+            loss = F.cross_entropy(logits, labels)
+            pred = logits.argmax(dim=1)
+            accuracy = (pred == labels).float().mean().item()
 
             val_loss += loss.item() / len(val_data_loader)
             val_acc += accuracy / len(val_data_loader)
