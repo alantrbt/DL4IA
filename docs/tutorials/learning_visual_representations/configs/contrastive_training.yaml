@@ -10,7 +10,7 @@ d_model: 128
 d_alexnet: 10000
 
 # Training info
-epochs: 100
+epochs: 50 #100
 batch_size: 8
 lr: 0.00035
 temperature: 0.1
@@ -35,4 +35,4 @@ data_std: [0.229, 0.224, 0.225]
 pretrained_params: /home/howk/Documents/Professionel_études/AgroParisTech_cours/3A_IODAA/code_folder/Projet_romain/data_td3/pretrained_alexnet_dc.tar
 
 # Results folder
-res_dir:
+res_dir: /home/howk/Documents/Professionel_études/AgroParisTech_cours/3A_IODAA/code_folder/Projet_romain/data_td3/results_contrastive_training

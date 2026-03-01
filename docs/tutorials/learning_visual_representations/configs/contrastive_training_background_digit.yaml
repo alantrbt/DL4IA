@@ -6,7 +6,7 @@ imagenet_labels_file: /home/howk/Documents/Professionel_études/AgroParisTech_co
 imagenet_classes: [2, 3, 4, 6, 43, 203, 400, 600, 700, 800]
 
 # MNIST info
-mnist_data_folder:
+mnist_data_folder: /home/howk/Documents/Professionel_études/AgroParisTech_cours/3A_IODAA/code_folder/Projet_romain/data_td3/mnist
 
 # Model info
 d_model: 128
@@ -35,4 +35,4 @@ device: 'cuda'
 pretrained_params: /home/howk/Documents/Professionel_études/AgroParisTech_cours/3A_IODAA/code_folder/Projet_romain/data_td3/pretrained_alexnet_dc.tar
 
 # Results folder
-res_dir:
+res_dir: /home/howk/Documents/Professionel_études/AgroParisTech_cours/3A_IODAA/code_folder/Projet_romain/data_td3/results_contrastive_training

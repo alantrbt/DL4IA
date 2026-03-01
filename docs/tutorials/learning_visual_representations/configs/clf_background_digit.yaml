@@ -22,4 +22,4 @@ device: 'cuda'
 n_neighbors: 3
 
 # Results folder
-res_dir:
+res_dir: /home/howk/Documents/Professionel_études/AgroParisTech_cours/3A_IODAA/code_folder/Projet_romain/data_td3/results_contrastive_training

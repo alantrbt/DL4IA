@@ -135,7 +135,9 @@ class ImageNetMnist(SubsetImageNet):
                 random_digit_ind2 = random_digit_ind2[0][np.random.randint(len(random_digit_ind2[0]))]
                 digit2, digit_label2 = self.get_digit(random_digit_ind2)
 
-                ...
+                img2 = self.transform1(img)
+                img2 = insert_digit(digit2, img2)
+                imagenet_label2 = imagenet_label1
 
             elif self.shared_feature == 'digit':
                 random_ind = np.random.choice(
@@ -145,7 +147,10 @@ class ImageNetMnist(SubsetImageNet):
                     )), size=1
                 )
                 
-                ...
+                img2, imagenet_label2 = super().__getitem__(random_ind[0])
+                img2 = self.transform1(img2)
+                img2 = insert_digit(digit1, img2)
+                digit_label2 = digit_label1
             
             else:
                 raise ValueError("If shared_feature is a string,\
