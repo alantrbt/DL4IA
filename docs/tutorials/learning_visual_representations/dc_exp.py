@@ -26,8 +26,8 @@ def main(cfg):
     subset_classes = cfg['subset_classes']
 
     dataset = SubsetImageNet(
-        cfg['data_folder'], 
-        cfg['labels_file'], 
+        cfg['data_folder'],
+        cfg['labels_file'],
         classes=subset_classes
         )
     
@@ -106,10 +106,10 @@ def main(cfg):
             data = data.to(device)
             labels = labels.to(device)
 
-            logits = ...
-            loss = ...
-            pred = ...
-            accuracy = ...
+            logits = model(data)  # TODO: complete.
+            loss = F.cross_entropy(logits, labels)  # TODO: complete.
+            pred = torch.argmax(logits, dim=1)  # TODO: complete.
+            accuracy = (pred == labels).float().mean().item()  # TODO: complete.
 
             loss.backward()
             optimizer.step()
@@ -128,11 +128,11 @@ def main(cfg):
             labels = labels.to(device)
 
             with torch.no_grad():
-                logits = ...
+                logits = model(data) # TODO: complete.
 
-            loss = ...
-            pred = ...
-            accuracy = ...
+            loss = F.cross_entropy(logits, labels)  # TODO: complete.
+            pred = torch.argmax(logits, dim=1)  # TODO: complete.
+            accuracy = (pred == labels).float().mean().item()  # TODO: complete.
 
             val_loss += loss.item() / len(val_data_loader)
             val_acc += accuracy / len(val_data_loader)
@@ -153,7 +153,7 @@ def main(cfg):
     print("Best validation loss: {:.2f}".format(val_loss))
     print("Best validation accuracy: {:.2f}".format(val_acc))
 
-    ...
+    # ...
             
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

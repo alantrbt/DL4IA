@@ -36,13 +36,14 @@ class ImageNet(Dataset):
         img = read_image(file_path)
 
         # Convert to tensor
-        ...
+        img = torch.from_numpy(img)  # TODO: complete.
 
-        # Permute axis
-        ...
+        # # Permute axis
+        img = img.permute(2, 0, 1)
+        # print(f"Image shape after permutation: {img.shape}")  # Debug print
 
         # Convert to float in [0, 1]
-        ...
+        img = img.float() / 255.0  # TODO: complete.
 
         if self.transform is not None:
             img = self.transform(img)
@@ -86,8 +87,8 @@ class ContrastiveDataset(SubsetImageNet):
 
     def __getitem__(self, i):
         img, _ = super().__getitem__(i)
-        img1 = ...
-        img2 = ...
+        img1 = self.view_transform(img)  # TODO: complete.
+        img2 = self.view_transform(img)  # TODO: complete.
         return img, img1, img2
 
 
@@ -133,8 +134,10 @@ class ImageNetMnist(SubsetImageNet):
                 random_digit_ind2 = np.where(self.mnist_labels != digit_label1)
                 random_digit_ind2 = random_digit_ind2[0][np.random.randint(len(random_digit_ind2[0]))]
                 digit2, digit_label2 = self.get_digit(random_digit_ind2)
-
-                ...
+                
+                img2 = self.transform1(img)
+                img2 = insert_digit(digit2, img2)
+                imagenet_label2 = imagenet_label1
 
             elif self.shared_feature == 'digit':
                 random_ind = np.random.choice(
@@ -142,16 +145,25 @@ class ImageNetMnist(SubsetImageNet):
                         np.arange(i),
                         np.arange(i + 1, len(self))
                     )), size=1
-                )
+                )[0]
                 
-                ...
+                img2, imagenet_label2 = super().__getitem__(random_ind)
+                digit2 = digit1
+                digit_label2 = digit_label1
+                
+                img2 = self.transform1(img2)
+                img2 = insert_digit(digit2, img2)
             
             else:
                 raise ValueError("If shared_feature is a string,\
                                 then the shared feature must either be 'background' or 'digit'")
         elif isinstance(self.shared_feature, list):
             if 'background' in self.shared_feature and 'digit' in self.shared_feature:
-                ...
+                img2 = self.transform1(img)
+                digit2 = digit1
+                digit_label2 = digit_label1
+                imagenet_label2 = imagenet_label1
+                img2 = insert_digit(digit2, img2)
             else:
                 raise ValueError("If shared_feature is a list,\
                                 then it must contain 'background' and 'digit'.")

@@ -2,3 +2,5 @@
 *.ipynb_checkpoints
 s2_agri_pixel_set
 s2_agri_pixel_set.zip
+
+results/

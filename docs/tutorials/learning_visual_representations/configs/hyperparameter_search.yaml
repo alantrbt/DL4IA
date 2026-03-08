@@ -1,7 +1,7 @@
 # Config file for a random search in hyperparameter space.
 
-data_folder:
-labels_file:
+data_folder: /home/alan/tuto_Romain_Thoreau/data_td3/subset_imagenet
+labels_file: /home/alan/tuto_Romain_Thoreau/data_td3/imagenet_labels.txt
 
 subset_classes: [2, 3, 4, 6, 43, 203, 400, 600, 700, 800]
 data_mean: [0.485, 0.456, 0.406]
@@ -27,6 +27,6 @@ transforms:
 crop_size: 128
 kernel_size: 11
 
-pretrained_params:
+pretrained_params: null
 
-res_dir:
+res_dir: /home/alan/tuto_Romain_Thoreau/output_original/learning_visual_representations

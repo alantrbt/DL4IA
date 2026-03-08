@@ -18,4 +18,4 @@ transforms:
   - normalize
 crop_size: 224
 n_classes: 10
-res_dir:
+res_dir: /home/alan/tuto_Romain_Thoreau/output_original/learning_visual_representations

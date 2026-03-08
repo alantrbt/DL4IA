@@ -17,12 +17,23 @@ from models.alexnet import alexnet
 
 import pdb
 
+
+def get_shared_feature_key(shared_feature):
+    """Return a filesystem-safe string key for the shared_feature."""
+    if isinstance(shared_feature, str):
+        return shared_feature
+    elif isinstance(shared_feature, list):
+        return '_'.join(sorted(shared_feature))
+    return str(shared_feature)
+
+
 def main(cfg, task: str = 'imagenet'):
-    exp_folder = os.path.dirname(cfg['res_dir'])
     shared_feature = cfg['shared_feature']
-    
-    data = torch.load(os.path.join(exp_folder, f'test_data_{shared_feature}.pt'))
-    labels = torch.load(os.path.join(exp_folder, f'test_{task}_labels_{shared_feature}.pt'))
+    shared_feature_key = get_shared_feature_key(shared_feature)
+    exp_folder = os.path.join(cfg['res_dir'], shared_feature_key)
+
+    data = torch.load(os.path.join(exp_folder, f'test_data_{shared_feature_key}.pt'))
+    labels = torch.load(os.path.join(exp_folder, f'test_{task}_labels_{shared_feature_key}.pt'))
 
     n = len(labels) // 2
     train_data, test_data = data[:n], data[n:]
@@ -70,19 +81,20 @@ def main(cfg, task: str = 'imagenet'):
     test_features = torch.cat(test_features).cpu().numpy()
     train_labels, test_labels = train_labels.numpy(), test_labels.numpy()
 
-    knn = KNeighborsClassifier(n_neighbors=cfg['n_neighbors'])
+    knn = KNeighborsClassifier(n_neighbors=cfg.get('n_neighbors', 5))
     knn.fit(train_features, train_labels)
     pred = knn.predict(test_features)
-    
+
     test_acc = np.mean(pred == test_labels)
 
     return test_acc
-        
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--cfg_file', type=str,
                         help='Path to the training config.')
-   
+
     parser = parser.parse_args()
 
     with open(parser.cfg_file, 'r') as file:
@@ -90,11 +102,13 @@ if __name__ == '__main__':
 
     pprint.pprint(cfg)
 
+    shared_feature_key = get_shared_feature_key(cfg['shared_feature'])
+    exp_folder = os.path.join(cfg['res_dir'], shared_feature_key)
+
     metrics = {}
     for task in ['imagenet', 'digit']:
         acc = main(cfg, task)
         metrics[task] = float(acc)
 
-    with open(os.path.join(cfg['res_dir'], f'test_accuracy.yaml'), 'w') as file:
+    with open(os.path.join(exp_folder, f'test_accuracy_{shared_feature_key}.yaml'), 'w') as file:
         yaml.dump(metrics, file)
-  
