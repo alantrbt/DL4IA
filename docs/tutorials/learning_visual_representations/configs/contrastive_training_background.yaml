@@ -1,12 +1,13 @@
 # Config file for simCLR training with views that shared background features only.
 
 # ImageNet info
-imagenet_data_folder:
-imagenet_labels_file:
+
+data_folder: /home/alan/tuto_Romain_Thoreau/data_td3/subset_imagenet
+labels_file: /home/alan/tuto_Romain_Thoreau/data_td3/imagenet_labels.txt
 imagenet_classes: [2, 3, 4, 6, 43, 203, 400, 600, 700, 800]
 
 # MNIST info
-mnist_data_folder:
+mnist_data_folder: /home/alan/tuto_Romain_Thoreau/data_td3/mnist
 
 # Model info
 d_model: 128
@@ -32,7 +33,7 @@ temperature: 0.1
 device: 'cuda'
 
 # Pretrained parameters
-pretrained_params:
+pretrained_params: null
 
 # Results folder
-res_dir:
+res_dir: /home/alan/tuto_Romain_Thoreau/DL4IA/docs/tutorials/learning_visual_representations/results

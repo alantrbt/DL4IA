@@ -61,10 +61,14 @@ def compute_dataset_activations(model, dataset, layer, batch_size=64):
         batch_size
     )
 
+    device = next(model.parameters()).device
+
     activations = []
-    for data, _ in tqdm(loader, desc=f"Compute activations over dataset for layer {layer}"):
-        batch_activation = compute_batch_activations(model, data, layer)
-        activations.append(batch_activation)
+    with torch.no_grad():
+        for data, _ in tqdm(loader, desc=f"Compute activations over dataset for layer {layer}"):
+            data = data.to(device)
+            batch_activation = compute_batch_activations(model, data, layer)
+            activations.append(batch_activation)
 
     return torch.cat(activations)
 
@@ -103,7 +107,7 @@ def maximize_img_response(model, img_size, layer, filter_id, device='cuda', n_it
         grads = grads.div(torch.norm(grads)+1e-8)
 
         # Update image
-        img.data = img.data + lr * grads  # TODO: complete.
+        img.data = img.data - lr * grads  # TODO: complete.
         img.grad.zero_()  # TODO: complete.
 
         # Apply gaussian blur
